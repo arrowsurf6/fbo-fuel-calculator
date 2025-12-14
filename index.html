@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FBO Fuel vs Ramp Fee</title>
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="
+#ffffff" />
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
-      background: #f5f6f7;
+      background: 
+#f5f6f7;
     }
     .container {
       max-width: 480px;
@@ -21,7 +23,8 @@
       margin-bottom: 12px;
     }
     .card {
-      background: #ffffff;
+      background: 
+#ffffff;
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 16px;
@@ -49,7 +52,8 @@
       margin-top: 12px;
       padding: 10px;
       border-radius: 8px;
-      background: #f0f2f4;
+      background: 
+#f0f2f4;
       font-weight: 600;
     }
     .note {
@@ -62,21 +66,16 @@
 <body>
   <div class="container">
     <h1>FBO Fuel vs Ramp Fee</h1>
-
     <div class="card">
       <label>Ramp fee</label>
       <input id="rampFee" type="number" step="0.01" value="25" />
-
       <label>Fuel price (per gallon)</label>
       <input id="fuelPrice" type="number" step="0.01" value="6.50" />
-
       <label>Minimum uplift to waive fee (gallons)</label>
       <input id="minUplift" type="number" step="0.1" value="10" />
-
       <label>Fuel you plan to buy anyway (gallons)</label>
       <input id="plannedFuel" type="number" step="0.1" value="0" />
     </div>
-
     <div class="card">
       <div class="result">
         <span>Cost to buy minimum uplift</span>
@@ -90,31 +89,25 @@
         <span>Break-even gallons</span>
         <strong id="breakeven">—</strong>
       </div>
-
       <div class="recommendation" id="recommendation"></div>
       <div class="note">Break-even gallons = ramp fee ÷ fuel price.</div>
     </div>
   </div>
-
   <script>
     function n(id) {
       return parseFloat(document.getElementById(id).value) || 0;
     }
-
     function calc() {
       const rampFee = n('rampFee');
       const fuelPrice = n('fuelPrice');
       const minUplift = n('minUplift');
       const plannedFuel = n('plannedFuel');
-
       const costMin = fuelPrice * minUplift;
       const costRamp = rampFee + (fuelPrice * plannedFuel);
       const breakeven = fuelPrice > 0 ? rampFee / fuelPrice : 0;
-
-      document.getElementById('costMin').textContent = `$${costMin.toFixed(2)}`;
-      document.getElementById('costRamp').textContent = `$${costRamp.toFixed(2)}`;
+      document.getElementById('costMin').textContent = $${costMin.toFixed(2)};
+      document.getElementById('costRamp').textContent = $${costRamp.toFixed(2)};
       document.getElementById('breakeven').textContent = breakeven.toFixed(2) + ' gal';
-
       let rec = '';
       if (costMin < costRamp) {
         rec = 'Buy the minimum uplift. It is the cheaper option.';
@@ -125,9 +118,9 @@
       }
       document.getElementById('recommendation').textContent = rec;
     }
-
     document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
     calc();
   </script>
 </body>
 </html>
+
