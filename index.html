@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+html<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +13,7 @@
       background: #f5f6f7;
     }
     .container {
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
       padding: 16px;
     }
@@ -51,30 +52,46 @@
       justify-content: space-between;
       margin: 6px 0;
     }
-    .comparison-section {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 2px solid #e0e0e0;
-    }
-    .option-card {
+    .scenario-card {
       background: #f8f9fa;
       border-radius: 8px;
       padding: 12px;
       margin-bottom: 12px;
       border: 2px solid #e0e0e0;
     }
-    .option-card.best {
+    .scenario-card.best {
       background: #e8f5e9;
       border-color: #4caf50;
     }
-    .option-title {
+    .scenario-title {
       font-weight: 700;
       font-size: 1.05rem;
       margin-bottom: 8px;
       color: #333;
     }
-    .option-card.best .option-title {
+    .scenario-card.best .scenario-title {
       color: #2e7d32;
+    }
+    .scenario-card.best .scenario-title::after {
+      content: " ✓ BEST";
+      font-size: 0.85rem;
+      background: #4caf50;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .breakdown {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 4px 0;
+    }
+    .total-cost {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #ddd;
+      font-weight: 700;
+      font-size: 1.1rem;
     }
     .recommendation {
       margin-top: 12px;
@@ -82,10 +99,6 @@
       border-radius: 8px;
       background: #f0f2f4;
       font-weight: 600;
-    }
-    .savings {
-      color: #2e7d32;
-      font-weight: 700;
     }
     .note {
       font-size: 0.85rem;
@@ -96,64 +109,66 @@
 </head>
 <body>
   <div class="container">
-    <h1>FBO Fuel vs Ramp Fee</h1>
+    <h1>FBO Fuel Calculator</h1>
     
     <div class="card">
       <h2>Current FBO</h2>
       <label>Ramp fee</label>
-      <input id="rampFee" type="number" step="0.01" value="25" />
+      <input id="rampFee1" type="number" step="0.01" value="25" />
       <label>Fuel price (per gallon)</label>
-      <input id="fuelPrice" type="number" step="0.01" value="6.50" />
+      <input id="fuelPrice1" type="number" step="0.01" value="6.50" />
       <label>Minimum uplift to waive fee (gallons)</label>
-      <input id="minUplift" type="number" step="0.1" value="10" />
+      <input id="minUplift1" type="number" step="0.1" value="10" />
     </div>
 
     <div class="card">
-      <h2>Next Stop</h2>
-      <label>Fuel price at next stop (per gallon)</label>
-      <input id="nextStopPrice" type="number" step="0.01" value="5.50" />
-      <label>Expected uplift at next stop (gallons)</label>
-      <input id="nextStopUplift" type="number" step="0.1" value="20" />
+      <h2>Next Stop FBO</h2>
+      <label>Ramp fee</label>
+      <input id="rampFee2" type="number" step="0.01" value="15" />
+      <label>Fuel price (per gallon)</label>
+      <input id="fuelPrice2" type="number" step="0.01" value="5.50" />
+      <label>Minimum uplift to waive fee (gallons)</label>
+      <input id="minUplift2" type="number" step="0.1" value="10" />
     </div>
 
     <div class="card">
-      <h2>Analysis</h2>
-      <div class="result">
-        <span>Break-even gallons (current FBO)</span>
-        <strong id="breakeven">—</strong>
-      </div>
-      <div class="note">Break-even gallons = ramp fee ÷ fuel price.</div>
+      <h2>Trip Requirements</h2>
+      <label>Total fuel needed for trip (gallons)</label>
+      <input id="totalFuel" type="number" step="0.1" value="30" />
+    </div>
 
-      <div class="comparison-section">
-        <div class="option-card" id="currentFBOCard">
-          <div class="option-title">Option 1: Fuel Here</div>
+    <div class="card">
+      <h2>Scenario Comparison</h2>
+      
+      <div class="scenario-card" id="scenario1">
+        <div class="scenario-title">Scenario 1: Buy All Fuel Here</div>
+        <div class="breakdown" id="s1breakdown"></div>
+        <div class="total-cost">
           <div class="result">
-            <span>Buy minimum uplift:</span>
-            <strong id="costMin">$0.00</strong>
-          </div>
-          <div class="result">
-            <span>Pay ramp fee only:</span>
-            <strong id="costRamp">$0.00</strong>
-          </div>
-          <div class="result" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;">
-            <span style="font-weight: 700;">Best option here:</span>
-            <strong id="bestCurrent">—</strong>
+            <span>Total Cost:</span>
+            <strong id="s1total">$0.00</strong>
           </div>
         </div>
+      </div>
 
-        <div class="option-card" id="nextStopCard">
-          <div class="option-title">Option 2: Wait for Next Stop</div>
+      <div class="scenario-card" id="scenario2">
+        <div class="scenario-title">Scenario 2: Buy Minimum Here, Rest at Next Stop</div>
+        <div class="breakdown" id="s2breakdown"></div>
+        <div class="total-cost">
           <div class="result">
-            <span>Pay ramp fee here:</span>
-            <strong id="nextStopRampFee">$0.00</strong>
+            <span>Total Cost:</span>
+            <strong id="s2total">$0.00</strong>
           </div>
+        </div>
+      </div>
+
+      <div class="scenario-card" id="scenario3">
+        <div class="scenario-title">Scenario 3: Pay Fee Here, Buy All Fuel at Next Stop</div>
+        <div class="breakdown" id="s3breakdown"></div>
+        <div class="total-cost">
           <div class="result">
-            <span>Fuel cost at next stop:</span>
-            <strong id="nextStopFuelCost">$0.00</strong>
-          </div>
-          <div class="result" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;">
-            <span style="font-weight: 700;">Total cost:</span>
-            <strong id="nextStopTotal">$0.00</strong>
+            <span>Total Cost:</span>
+            <strong id="s3total">$0.00</strong>
           </div>
         </div>
       </div>
@@ -165,61 +180,98 @@
     function n(id) {
       return parseFloat(document.getElementById(id).value) || 0;
     }
-    function calc() {
-      const rampFee = n('rampFee');
-      const fuelPrice = n('fuelPrice');
-      const minUplift = n('minUplift');
-      const nextStopPrice = n('nextStopPrice');
-      const nextStopUplift = n('nextStopUplift');
 
-      // Current FBO calculations
-      const costMin = fuelPrice * minUplift;
-      const costRamp = rampFee;
-      const breakeven = fuelPrice > 0 ? rampFee / fuelPrice : 0;
+    function calculateScenario(fuelHere, fuelNext, rampFee1, rampFee2, price1, price2, minUplift1, minUplift2) {
+      let cost1 = 0;
+      let cost2 = 0;
+      let details = [];
 
-      // Determine best option at current FBO
-      const bestCurrentCost = Math.min(costMin, costRamp);
-      const bestCurrentOption = costMin <= costRamp ? 'Buy minimum' : 'Pay ramp fee';
-
-      // Next stop calculations
-      const nextStopFuelCost = nextStopPrice * nextStopUplift;
-      const nextStopTotalCost = rampFee + nextStopFuelCost;
-
-      // Update displays
-      document.getElementById('costMin').textContent = `$${costMin.toFixed(2)}`;
-      document.getElementById('costRamp').textContent = `$${costRamp.toFixed(2)}`;
-      document.getElementById('breakeven').textContent = breakeven.toFixed(2) + ' gal';
-      document.getElementById('bestCurrent').textContent = `${bestCurrentOption} ($${bestCurrentCost.toFixed(2)})`;
-      
-      document.getElementById('nextStopRampFee').textContent = `$${rampFee.toFixed(2)}`;
-      document.getElementById('nextStopFuelCost').textContent = `$${nextStopFuelCost.toFixed(2)}`;
-      document.getElementById('nextStopTotal').textContent = `$${nextStopTotalCost.toFixed(2)}`;
-
-      // Overall recommendation
-      const currentFBOCard = document.getElementById('currentFBOCard');
-      const nextStopCard = document.getElementById('nextStopCard');
-      let rec = '';
-
-      if (bestCurrentCost < nextStopTotalCost) {
-        const savings = nextStopTotalCost - bestCurrentCost;
-        rec = `Fuel at current FBO (${bestCurrentOption}). Save $${savings.toFixed(2)} vs. waiting for next stop.`;
-        currentFBOCard.classList.add('best');
-        nextStopCard.classList.remove('best');
-      } else if (bestCurrentCost > nextStopTotalCost) {
-        const savings = bestCurrentCost - nextStopTotalCost;
-        rec = `Wait for next stop. Save $${savings.toFixed(2)} by paying ramp fee here and fueling at next stop.`;
-        nextStopCard.classList.add('best');
-        currentFBOCard.classList.remove('best');
+      // Cost at FBO 1
+      if (fuelHere > 0) {
+        cost1 = fuelHere * price1;
+        details.push(`Current FBO: ${fuelHere.toFixed(1)} gal × $${price1.toFixed(2)} = $${cost1.toFixed(2)}`);
+        if (fuelHere < minUplift1) {
+          cost1 += rampFee1;
+          details.push(`Ramp fee (didn't meet ${minUplift1} gal minimum): $${rampFee1.toFixed(2)}`);
+        } else {
+          details.push(`Ramp fee waived (met ${minUplift1} gal minimum)`);
+        }
       } else {
-        rec = 'Both options cost approximately the same.';
-        currentFBOCard.classList.remove('best');
-        nextStopCard.classList.remove('best');
+        cost1 = rampFee1;
+        details.push(`Current FBO ramp fee: $${rampFee1.toFixed(2)}`);
       }
 
+      // Cost at FBO 2
+      if (fuelNext > 0) {
+        cost2 = fuelNext * price2;
+        details.push(`Next stop: ${fuelNext.toFixed(1)} gal × $${price2.toFixed(2)} = $${cost2.toFixed(2)}`);
+        if (fuelNext < minUplift2) {
+          cost2 += rampFee2;
+          details.push(`Ramp fee (didn't meet ${minUplift2} gal minimum): $${rampFee2.toFixed(2)}`);
+        } else {
+          details.push(`Ramp fee waived (met ${minUplift2} gal minimum)`);
+        }
+      }
+
+      return {
+        total: cost1 + cost2,
+        details: details
+      };
+    }
+
+    function calc() {
+      const rampFee1 = n('rampFee1');
+      const fuelPrice1 = n('fuelPrice1');
+      const minUplift1 = n('minUplift1');
+      const rampFee2 = n('rampFee2');
+      const fuelPrice2 = n('fuelPrice2');
+      const minUplift2 = n('minUplift2');
+      const totalFuel = n('totalFuel');
+
+      // Scenario 1: Buy all fuel here
+      const s1 = calculateScenario(totalFuel, 0, rampFee1, rampFee2, fuelPrice1, fuelPrice2, minUplift1, minUplift2);
+      document.getElementById('s1breakdown').innerHTML = s1.details.join('<br>');
+      document.getElementById('s1total').textContent = `$${s1.total.toFixed(2)}`;
+
+      // Scenario 2: Buy minimum here, rest at next stop
+      const fuelAtNext = Math.max(0, totalFuel - minUplift1);
+      const s2 = calculateScenario(minUplift1, fuelAtNext, rampFee1, rampFee2, fuelPrice1, fuelPrice2, minUplift1, minUplift2);
+      document.getElementById('s2breakdown').innerHTML = s2.details.join('<br>');
+      document.getElementById('s2total').textContent = `$${s2.total.toFixed(2)}`;
+
+      // Scenario 3: Pay ramp fee here, buy all at next stop
+      const s3 = calculateScenario(0, totalFuel, rampFee1, rampFee2, fuelPrice1, fuelPrice2, minUplift1, minUplift2);
+      document.getElementById('s3breakdown').innerHTML = s3.details.join('<br>');
+      document.getElementById('s3total').textContent = `$${s3.total.toFixed(2)}`;
+
+      // Determine best scenario
+      const scenarios = [
+        { id: 'scenario1', cost: s1.total, name: 'Scenario 1' },
+        { id: 'scenario2', cost: s2.total, name: 'Scenario 2' },
+        { id: 'scenario3', cost: s3.total, name: 'Scenario 3' }
+      ];
+
+      scenarios.sort((a, b) => a.cost - b.cost);
+      const best = scenarios[0];
+      const savings = scenarios[1].cost - best.cost;
+
+      // Highlight best option
+      scenarios.forEach(s => {
+        document.getElementById(s.id).classList.remove('best');
+      });
+      document.getElementById(best.id).classList.add('best');
+
+      // Recommendation
+      let rec = `${best.name} is the most cost-effective option.`;
+      if (savings > 0) {
+        rec += ` You'll save $${savings.toFixed(2)} compared to the next best option.`;
+      }
       document.getElementById('recommendation').textContent = rec;
     }
+
     document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
     calc();
   </script>
 </body>
 </html>
+Copy everything from <!DOCTYPE html> to </html> and paste it into your GitHub file, then commit the changes!Claude is AI and can make mistakes. Please double-check responses.Want to be notified when Claude responds?
